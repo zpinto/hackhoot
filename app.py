@@ -8,16 +8,6 @@ app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/kahoot'
 api = Api(app)
 
-# api.add_resource(Store, '/store/<string:name>')
-# api.add_resource(StoreList, '/stores')
-# api.add_resource(Item, '/item/<string:name>')
-# api.add_resource(ItemList, '/items')
-# api.add_resource(UserRegister, '/register')
-# api.add_resource(User, '/user/<int:user_id>')
-# api.add_resource(UserLogin, '/login')
-# api.add_resource(TokenRefresh, '/refresh')
-# api.add_resource(UserLogout, '/logout')
-
 api.add_resource(QuestionSetRegister, '/questionset')
 api.add_resource(QuestionSet, '/quetionset/<int:id>')
 
