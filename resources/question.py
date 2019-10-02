@@ -1,4 +1,6 @@
 from flask_restful import Resource, reqparse
+from bson import json_util
+from bson.objectid import ObjectId
 from db import mongo
 import traceback
 
@@ -24,22 +26,29 @@ class QuestionSetRegister(Resource):
             if not all(key in question for key in ('question', 'choice1', 'choice2', 'choice3', 'choice4', 'answer')):
                 return {'message': 'One or more questions is incorrectly formatted'}, 400
 
-        question_set = None
         try:
-            question_set = mongo.db.questions.insert_one(
+            question_set_id = mongo.db.questions.insert_one(
                 {"name": data['name'], "questions": data['questions']}).inserted_id
+            question_set_created = mongo.db.questions.find_one(
+                {"_id": question_set_id})
         except:
             traceback.print_exc()
             return {'message': 'An error occured inserting the Question Set'}, 500
 
-        print(question_set)
-        return {"message": "question_set"}, 201
+        return json_util._json_convert(question_set_created), 201
 
 
 class QuestionSet(Resource):
 
     def get(self, id):
-        question_set = mongo.db.questions.find_one({"_id": id})
+        question_set = mongo.db.questions.find_one({"_id": ObjectId(id)})
+        print("I got to the get")
         if question_set:
-            return question_set.json(), 200
-        return {'message': 'Item not found'}, 404
+            return json_util._json_convert(question_set), 200
+        return {'message': 'Question set not found'}, 404
+
+    def put(self, id):
+        return
+
+    def delete(self, id):
+        return

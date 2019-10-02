@@ -9,7 +9,7 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/kahoot'
 api = Api(app)
 
 api.add_resource(QuestionSetRegister, '/questionset')
-api.add_resource(QuestionSet, '/quetionset/<int:id>')
+api.add_resource(QuestionSet, '/questionset/<string:id>')
 
 
 if __name__ == '__main__':
