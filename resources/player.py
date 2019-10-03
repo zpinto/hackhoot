@@ -4,7 +4,7 @@ from bson import json_util
 from bson.objectid import ObjectId
 from db import mongo
 
-import
+import traceback
 
 
 class PlayerCreator(Resource):
@@ -77,7 +77,7 @@ class Player(Resource):
 
     def put(self, id):
         data = Player.parser.parse_args()
-        data['answer_time'] = datetime.datetime.now().timestamp
+        data['answer_time'] = datetime.datetime.now()
 
         # TODO: update answer and answer_time
         try:
@@ -98,24 +98,35 @@ class Player(Resource):
         # check the answers to see if they are correct
         data['points'] = 0
         data['is_correct'] = False
-        if game['questions'][game['cur_question']] == data['answer'] and data['answer_time'] < game['cur_question_end_time']:
+
+        print(game['questions'][game['cur_question']]['answer'])
+        print(data['answer'])
+        print(data['answer_time'])
+        print(game['cur_question_end_time'])
+
+        print(game['questions'][game['cur_question'] - 1]['answer'] ==
+              data['answer'] and data['answer_time'] < game['cur_question_end_time'])
+
+        if game['questions'][game['cur_question']]['answer'] == data['answer'] and data['answer_time'] < game['cur_question_end_time']:
             # TODO: further define point values
             data['points'] = player['points'] + 1
             data['is_correct'] = True
 
         try:
             mongo.db.players.update_one({"_id": ObjectId(id)}, {
-                "$set": {"answer": data['answer'], "answer_time": data['answer_time'], "points": data['points']}})
+                "$set": {"answer": data['answer'], "points": data['points']}})
         except:
-            traceback.print_exc
+            traceback.print_exc()
             return {'message': 'An error occured trying to update this Player with the answer'}, 500
 
-        return {
+        print(game['next_question_start_time'])
+
+        return json_util._json_convert({
             "is_correct": data['is_correct'],
             "points": data['points'],
             "next_question_start_time": game['next_question_start_time'],
-            "next_question_end_time": game['next_question_end_time']
-        }, 200
+            "next_question_end_time": game['next_question_end_time'],
+        }), 200
 
     def delete(self, id):
         # TODO: delete user from db
