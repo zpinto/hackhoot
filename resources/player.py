@@ -3,8 +3,10 @@ from bson import json_util
 from bson.objectid import ObjectId
 from db import mongo
 
+import datetime
 
-class PlayerRegister(Resource):
+
+class PlayerCreator(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('game_id',
                         type=str,
@@ -18,10 +20,19 @@ class PlayerRegister(Resource):
                         )
 
     def post(self):
-        data = PlayerRegister.parser.parse_args()
+        data = PlayerCreator.parser.parse_args()
 
+        # check to see that the given game Id exists
         try:
-            # TODO: need to verify the game_id exists
+            game = mongo.db.games.find_one({"_id": ObjectId(data['game_id'])})
+        except:
+            return {'message': 'An error occured trying to look up this Game'}, 500
+
+        if not game:
+            return {'message': 'Game not found. game_id must be a Game that exists.'}, 404
+
+        # create the Player
+        try:
             player_id = mongo.db.players.insert_one({
                 "name": data['name'],
                 "game_id": data['game_id'],
@@ -34,12 +45,25 @@ class PlayerRegister(Resource):
         except:
             return {'message': 'An error occured inserting the Player'}, 500
 
+        # add the Player to the game
+        try:
+            mongo.db.games.update_one({"_id": ObjectId(data['game_id'])}, {
+                                      "$set": {"players": game['players'].append(player_id)}})
+        except:
+            return {'message': 'An error occured trying to update this Game with the new Player'}, 500
+
         return json_util._json_convert(player_created), 201
 
 # TODO: add resource for getting/deleting multiple players
 
 
 class Player(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('answer',
+                        type=str,
+                        required=True,
+                        help="answer field cannot be left blank!"
+                        )
 
     def get(self, id):
         player = mongo.db.players.find_one({"_id": ObjectId(id)})
@@ -48,9 +72,49 @@ class Player(Resource):
         return {'message': 'Player not found'}, 404
 
     def put(self, id):
+        data = Player.parser.parse_args()
+        data['answer_time'] = datetime.datetime.now()
+
         # TODO: update answer and answer_time
+        try:
+            player = mongo.db.players.find_one({"_id": ObjectId(id)})
+        except:
+            return {'message': 'An error occured trying to look up this Player'}, 500
+
+        if not player:
+            return {'message': 'Player not found'}, 404
+
         # TODO: calculate the points based on question start time in games cur_question_start_time
-        return
+        try:
+            game = mongo.db.games.find_one(
+                {"_id": ObjectId(player['game_id'])})
+        except:
+            return {'message': 'An error occured trying to look up this Game'}, 500
+
+        # check the answers to see if they are correct
+        new_points = 0
+        if game['questions'][game['cur_question']] == data['answer'] and data['answer_time'] < game['cur_question_end_time']:
+            new_points = 1
+        data['points'] = player['points'] + new_points
+
+        try:
+            mongo.db.players.update_one({"_id": ObjectId(id)}, {
+                "$set": {"answer": data['answer'], "answer_time": data['answer_time'], "points": data['points']}})
+        except:
+            return {'message': 'An error occured trying to update this Player with the answer'}, 500
+
+        return {"points": data['points'], "next_question_start_time": game['next_question_start_time'], "next_question_end_time": game['next_question_end_time']}, 200
 
     def delete(self, id):
+        # TODO: delete user from db
+        return
+
+
+class PlayerList(Resource):
+    def get(self, game_id):
+        # TODO: look up players that with a specific game_id
+        return
+
+    def delete(self, game_id):
+        # TODO: look up players that with a specific game_id and delete them
         return

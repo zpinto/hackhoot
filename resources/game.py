@@ -29,6 +29,7 @@ class GameCreator(Resource):
                 "cur_time": datetime.datetime.now(),
                 "cur_question_end_time": datetime.datetime.now() + datetime.timedelta(seconds=data['time_limit']),
                 "next_question_start_time": datetime.datetime.now() + datetime.timedelta(seconds=60),
+                "next_question_end_time": datetime.datetime.now() + datetime.timedelta(seconds=(60 + data['time']))
             }).inserted_id
             game_created = mongo.db.games.find_one({"_id": game_id})
         except:
@@ -75,6 +76,8 @@ class Game(Resource):
         ) + datetime.timedelta(seconds=game['time_limit'])
         updates['next_question_start_time'] = datetime.datetime.now(
         ) + datetime.timedelta(seconds=(game['time_limit'] + 10))
+        updates['next_question_end_time'] = updates['next_question_start_time'] + \
+            datetime.timedelta(seconds=game['time_limit'])
 
         try:
             mongo.db.games.update_one({"_id": ObjectId(id)}, {"$set": updates})
