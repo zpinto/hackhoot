@@ -21,7 +21,7 @@ class PlayerRegister(Resource):
         data = PlayerRegister.parser.parse_args()
 
         try:
-            # need to verify the game_id exists
+            # TODO: need to verify the game_id exists
             player_id = mongo.db.players.insert_one({
                 "name": data['name'],
                 "game_id": data['game_id'],
@@ -36,6 +36,8 @@ class PlayerRegister(Resource):
 
         return json_util._json_convert(player_created), 201
 
+# TODO: add resource for getting/deleting multiple players
+
 
 class Player(Resource):
 
@@ -46,6 +48,8 @@ class Player(Resource):
         return {'message': 'Player not found'}, 404
 
     def put(self, id):
+        # TODO: update answer and answer_time
+        # TODO: calculate the points based on question start time in games cur_question_start_time
         return
 
     def delete(self, id):
