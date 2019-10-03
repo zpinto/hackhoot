@@ -25,7 +25,7 @@ class GameCreator(Resource):
                 "game_state": "waiting",
                 "questions": [{"question": "test1", "A": "hello", "B": "hello", "C": "hello", "D": "Hello", "answer": "D"}, {"question": "test2", "A": "hello", "B": "hello", "C": "hello", "D": "Hello", "answer": "A"}],
                 "players": [],
-                "cur_question": 0,
+                "cur_question": -1,
                 "cur_time": datetime.datetime.now(),
                 "cur_question_end_time": datetime.datetime.now() + datetime.timedelta(seconds=data['time_limit']),
                 "next_question_start_time": datetime.datetime.now() + datetime.timedelta(seconds=60),

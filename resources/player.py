@@ -41,8 +41,6 @@ class PlayerCreator(Resource):
                 "name": data['name'],
                 "game_id": data['game_id'],
                 "points": 0,
-                "answer": None,
-                "answer_time": None
             }).inserted_id
             player_created = mongo.db.players.find_one(
                 {"_id": player_id})
@@ -114,7 +112,7 @@ class Player(Resource):
 
         try:
             mongo.db.players.update_one({"_id": ObjectId(id)}, {
-                "$set": {"answer": data['answer'], "points": data['points']}})
+                "$set": {"points": data['points']}})
         except:
             traceback.print_exc()
             return {'message': 'An error occured trying to update this Player with the answer'}, 500
@@ -124,6 +122,7 @@ class Player(Resource):
         return json_util._json_convert({
             "is_correct": data['is_correct'],
             "points": data['points'],
+            "game_state": game['game_state'],
             "next_question_start_time": game['next_question_start_time'],
             "next_question_end_time": game['next_question_end_time'],
         }), 200
