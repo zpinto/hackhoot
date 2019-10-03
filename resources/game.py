@@ -20,6 +20,7 @@ class GameCreator(Resource):
 
         try:
             # TODO: add 10 randomly selected question to game
+            # TODO: truncate ID or set shorter ID
             game_id = mongo.db.games.insert_one({
                 "time_limit": data['time_limit'],
                 "game_state": "waiting",

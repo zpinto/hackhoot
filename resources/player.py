@@ -115,6 +115,7 @@ class Player(Resource):
             "is_correct": data['is_correct'],
             "points": data['points'],
             "game_state": game['game_state'],
+            "cur_time": game['cur_time'],
             "next_question_start_time": game['next_question_start_time'],
             "next_question_end_time": game['next_question_end_time'],
         }), 200
