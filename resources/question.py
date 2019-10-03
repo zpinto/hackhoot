@@ -94,6 +94,9 @@ class QuestionList(Resource):
 
         return json_util._json_convert(questions), 200
 
+    def post(self):
+        # TODO: make a post for creating lists of questions at once
+        return 
 
 # class QuestionSetRegister(Resource):
 #     parser = reqparse.RequestParser()

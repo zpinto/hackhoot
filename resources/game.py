@@ -82,7 +82,6 @@ class Game(Resource):
         try:
             mongo.db.games.update_one({"_id": ObjectId(id)}, {"$set": updates})
         except:
-            traceback.print_exc()
             return {'message': 'An error occured trying to update this Game'}, 500
 
         try:

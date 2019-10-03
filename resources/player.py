@@ -97,13 +97,8 @@ class Player(Resource):
         data['points'] = 0
         data['is_correct'] = False
 
-        print(game['questions'][game['cur_question']]['answer'])
-        print(data['answer'])
-        print(data['answer_time'])
-        print(game['cur_question_end_time'])
-
-        print(game['questions'][game['cur_question'] - 1]['answer'] ==
-              data['answer'] and data['answer_time'] < game['cur_question_end_time'])
+        if game['game_state'] == 'done':
+            return {'message': 'The game ended'}, 423
 
         if game['questions'][game['cur_question']]['answer'] == data['answer'] and data['answer_time'] < game['cur_question_end_time']:
             # TODO: further define point values
@@ -114,10 +109,7 @@ class Player(Resource):
             mongo.db.players.update_one({"_id": ObjectId(id)}, {
                 "$set": {"points": data['points']}})
         except:
-            traceback.print_exc()
             return {'message': 'An error occured trying to update this Player with the answer'}, 500
-
-        print(game['next_question_start_time'])
 
         return json_util._json_convert({
             "is_correct": data['is_correct'],
