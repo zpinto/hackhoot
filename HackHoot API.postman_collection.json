@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "f1714174-7e4f-4d87-a822-f5bb5c06a834",
+		"name": "HackHoot API",
+		"description": "This is the backend for HackHoot!",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/createquestion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"question\": \"What is the best color?\",\n\t\"A\": \"Red\",\n\t\"B\": \"Blue\",\n\t\"C\": \"Green\",\n\t\"D\": \"Yellow\",\n\t\"answer\": \"B\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/createquestion",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"createquestion"
+					]
+				},
+				"description": "This enpoint is used to add a new question to the question bank."
+			},
+			"response": []
+		},
+		{
+			"name": "/question/<string:id>",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/question/5d944ed6f8148d2d55cf93ba",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"question",
+						"5d944ed6f8148d2d55cf93ba"
+					]
+				},
+				"description": "Gets the question from the question bank by id"
+			},
+			"response": []
+		},
+		{
+			"name": "/questions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions"
+					]
+				},
+				"description": "Gets a list of all of the questions in the question bank"
+			},
+			"response": []
+		},
+		{
+			"name": "/creategame",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"time_limit\": 30\n}"
+				},
+				"url": {
+					"raw": "{{url}}/creategame",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"creategame"
+					]
+				},
+				"description": "Creates a game instance"
+			},
+			"response": []
+		},
+		{
+			"name": "/game/<string:id>",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/game/5d966a1d94a17dd839c223d8",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"game",
+						"5d966a1d94a17dd839c223d8"
+					]
+				},
+				"description": "Gets the game based on the given id"
+			},
+			"response": []
+		},
+		{
+			"name": "/game/<string:id>",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/game/5d945e570dce3097e6b29d8d",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"game",
+						"5d945e570dce3097e6b29d8d"
+					]
+				},
+				"description": "Deletes the Game that is associated with the given id"
+			},
+			"response": []
+		},
+		{
+			"name": "/game/<string:id>",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/game/5d966a1d94a17dd839c223d8",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"game",
+						"5d966a1d94a17dd839c223d8"
+					]
+				},
+				"description": "Increases the cur_question by 1 and changes times associated with the timer."
+			},
+			"response": []
+		},
+		{
+			"name": "/createplayer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"game_id\": \"5d966a1d94a17dd839c223d8\",\n\t\"name\": \"John\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/createplayer",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"createplayer"
+					]
+				},
+				"description": "Creates a Player under a certain Game"
+			},
+			"response": []
+		}
+	]
+}
