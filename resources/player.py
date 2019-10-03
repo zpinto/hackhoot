@@ -1,9 +1,10 @@
+import datetime
 from flask_restful import Resource, reqparse
 from bson import json_util
 from bson.objectid import ObjectId
 from db import mongo
 
-import datetime
+import
 
 
 class PlayerCreator(Resource):
@@ -76,7 +77,7 @@ class Player(Resource):
 
     def put(self, id):
         data = Player.parser.parse_args()
-        data['answer_time'] = datetime.datetime.now()
+        data['answer_time'] = datetime.datetime.now().timestamp
 
         # TODO: update answer and answer_time
         try:
@@ -106,6 +107,7 @@ class Player(Resource):
             mongo.db.players.update_one({"_id": ObjectId(id)}, {
                 "$set": {"answer": data['answer'], "answer_time": data['answer_time'], "points": data['points']}})
         except:
+            traceback.print_exc
             return {'message': 'An error occured trying to update this Player with the answer'}, 500
 
         return {
