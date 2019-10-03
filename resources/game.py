@@ -23,13 +23,13 @@ class GameCreator(Resource):
             game_id = mongo.db.games.insert_one({
                 "time_limit": data['time_limit'],
                 "game_state": "waiting",
-                "questions": [{"thing": "thing"}, {"thing": "thing"}, {"thing": "thing"}, {"thing": "thing"}],
+                "questions": [{"question": "test1", "A": "hello", "B": "hello", "C": "hello", "D": "Hello", "answer": "D"}, {"question": "test2", "A": "hello", "B": "hello", "C": "hello", "D": "Hello", "answer": "A"}],
                 "players": [],
                 "cur_question": 0,
                 "cur_time": datetime.datetime.now(),
                 "cur_question_end_time": datetime.datetime.now() + datetime.timedelta(seconds=data['time_limit']),
                 "next_question_start_time": datetime.datetime.now() + datetime.timedelta(seconds=60),
-                "next_question_end_time": datetime.datetime.now() + datetime.timedelta(seconds=(60 + data['time']))
+                "next_question_end_time": datetime.datetime.now() + datetime.timedelta(seconds=(60 + data['time_limit']))
             }).inserted_id
             game_created = mongo.db.games.find_one({"_id": game_id})
         except:

@@ -4,7 +4,7 @@ from flask_pymongo import PyMongo
 
 from resources.question import QuestionCreator, Question, QuestionList
 from resources.game import GameCreator, Game
-from resources.player import PlayerCreator
+from resources.player import PlayerCreator, Player
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/kahoot'
@@ -18,6 +18,7 @@ api.add_resource(GameCreator, '/creategame')
 api.add_resource(Game, '/game/<string:id>')
 
 api.add_resource(PlayerCreator, '/createplayer')
+api.add_resource(Player, '/submitanswer/<string:id>')
 
 
 if __name__ == '__main__':

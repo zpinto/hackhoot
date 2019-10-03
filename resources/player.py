@@ -31,6 +31,9 @@ class PlayerCreator(Resource):
         if not game:
             return {'message': 'Game not found. game_id must be a Game that exists.'}, 404
 
+        if game['game_state'] != 'waiting':
+            return {'message': 'This Game is no longer allowing Players to join'}, 400
+
         # create the Player
         try:
             player_id = mongo.db.players.insert_one({
@@ -48,7 +51,7 @@ class PlayerCreator(Resource):
         # add the Player to the game
         try:
             mongo.db.games.update_one({"_id": ObjectId(data['game_id'])}, {
-                                      "$set": {"players": game['players'].append(player_id)}})
+                                      "$set": {"players": game['players'] + [str(player_id)]}})
         except:
             return {'message': 'An error occured trying to update this Game with the new Player'}, 500
 
@@ -92,10 +95,12 @@ class Player(Resource):
             return {'message': 'An error occured trying to look up this Game'}, 500
 
         # check the answers to see if they are correct
-        new_points = 0
+        data['points'] = 0
+        data['is_correct'] = False
         if game['questions'][game['cur_question']] == data['answer'] and data['answer_time'] < game['cur_question_end_time']:
-            new_points = 1
-        data['points'] = player['points'] + new_points
+            # TODO: further define point values
+            data['points'] = player['points'] + 1
+            data['is_correct'] = True
 
         try:
             mongo.db.players.update_one({"_id": ObjectId(id)}, {
@@ -103,7 +108,12 @@ class Player(Resource):
         except:
             return {'message': 'An error occured trying to update this Player with the answer'}, 500
 
-        return {"points": data['points'], "next_question_start_time": game['next_question_start_time'], "next_question_end_time": game['next_question_end_time']}, 200
+        return {
+            "is_correct": data['is_correct'],
+            "points": data['points'],
+            "next_question_start_time": game['next_question_start_time'],
+            "next_question_end_time": game['next_question_end_time']
+        }, 200
 
     def delete(self, id):
         # TODO: delete user from db
