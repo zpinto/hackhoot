@@ -4,6 +4,15 @@ from bson.objectid import ObjectId
 from db import mongo
 import traceback
 
+class ListQuestionCreator(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('questions',
+                        type=dict,
+                        required=True,
+                        action='append',
+                        help="Questions field cannot be left blank!"
+                        )
+
 
 class QuestionCreator(Resource):
     parser = reqparse.RequestParser()
@@ -95,8 +104,24 @@ class QuestionList(Resource):
         return json_util._json_convert(questions), 200
 
     def post(self):
-        # TODO: make a post for creating lists of questions at once
-        return 
+        data = ListQuestionCreator.parser.parse_args()
+        
+        try:
+            questions_created = []
+            for question in data['questions']:
+                question_id = mongo.db.questions.insert_one({
+                    "question": question['question'],
+                    "A": question['A'],
+                    "B": question['B'],
+                    "C": question['C'],
+                    "D": question['D'],
+                    "answer": question['answer']
+                }).inserted_id
+                questions_created.append(mongo.db.questions.find_one({"_id": question_id}))
+        except:
+            return {'message': 'An error occured creating the Questions'}, 500
+
+        return json_util._json_convert(questions_created), 201
 
 # class QuestionSetRegister(Resource):
 #     parser = reqparse.RequestParser()

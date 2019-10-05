@@ -5,6 +5,7 @@ from db import mongo
 
 import datetime
 import traceback
+import random
 
 
 class GameCreator(Resource):
@@ -19,12 +20,20 @@ class GameCreator(Resource):
         data = GameCreator.parser.parse_args()
 
         try:
-            # TODO: add 10 randomly selected question to game
             # TODO: truncate ID or set shorter ID
+            count = mongo.db.questions.count()
+            if count < 10:
+                return {'message': 'Less than 10 questions found'}, 500
+            question_indices = random.sample(range(count),10)
+            questions_db = mongo.db.questions.find()
+            questions = [questions_db[x]
+                for x in range(0,count)
+                if x in question_indices]
+
             game_id = mongo.db.games.insert_one({
                 "time_limit": data['time_limit'],
                 "game_state": "waiting",
-                "questions": [{"question": "test1", "A": "hello", "B": "hello", "C": "hello", "D": "Hello", "answer": "D"}, {"question": "test2", "A": "hello", "B": "hello", "C": "hello", "D": "Hello", "answer": "A"}],
+                "questions": questions,
                 "players": [],
                 "cur_question": -1,
                 "cur_time": datetime.datetime.now(),
