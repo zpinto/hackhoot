@@ -20,7 +20,6 @@ class GameCreator(Resource):
         data = GameCreator.parser.parse_args()
 
         try:
-            # TODO: truncate ID or set shorter ID
             count = mongo.db.questions.count()
             if count < 10:
                 return {'message': 'Less than 10 questions found'}, 500

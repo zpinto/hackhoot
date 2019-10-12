@@ -4,16 +4,6 @@ from bson.objectid import ObjectId
 from db import mongo
 import traceback
 
-class ListQuestionCreator(Resource):
-    parser = reqparse.RequestParser()
-    parser.add_argument('questions',
-                        type=dict,
-                        required=True,
-                        action='append',
-                        help="Questions field cannot be left blank!"
-                        )
-
-
 class QuestionCreator(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('question',
@@ -95,6 +85,14 @@ class Question(Resource):
 
 
 class QuestionList(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('questions',
+                        type=dict,
+                        required=True,
+                        action='append',
+                        help="Questions field cannot be left blank!"
+                        )
+
     def get(self):
         try:
             questions = mongo.db.questions.find()
@@ -104,7 +102,7 @@ class QuestionList(Resource):
         return json_util._json_convert(questions), 200
 
     def post(self):
-        data = ListQuestionCreator.parser.parse_args()
+        data = QuestionList.parser.parse_args()
         
         try:
             questions_created = []

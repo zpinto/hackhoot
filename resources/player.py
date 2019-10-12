@@ -56,9 +56,6 @@ class PlayerCreator(Resource):
 
         return json_util._json_convert(player_created), 201
 
-# TODO: add resource for getting/deleting multiple players
-
-
 class Player(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('answer',
@@ -77,7 +74,6 @@ class Player(Resource):
         data = Player.parser.parse_args()
         data['answer_time'] = datetime.datetime.now()
 
-        # TODO: update answer and answer_time
         try:
             player = mongo.db.players.find_one({"_id": ObjectId(id)})
         except:
@@ -86,13 +82,12 @@ class Player(Resource):
         if not player:
             return {'message': 'Player not found'}, 404
 
-        # TODO: calculate the points based on question start time in games cur_question_start_time
         try:
             game = mongo.db.games.find_one(
                 {"_id": ObjectId(player['game_id'])})
         except:
             return {'message': 'An error occured trying to look up this Game'}, 500
-
+        
         # check the answers to see if they are correct
         data['points'] = 0
         data['is_correct'] = False
@@ -101,8 +96,8 @@ class Player(Resource):
             return {'message': 'The game ended'}, 423
 
         if game['questions'][game['cur_question']]['answer'] == data['answer'] and data['answer_time'] < game['cur_question_end_time']:
-            # TODO: further define point values
-            data['points'] = player['points'] + 1
+            points = int(1000 - 33.3 * (data['answer_time'] - game['cur_time']).total_seconds())
+            data['points'] = player['points'] + points
             data['is_correct'] = True
 
         try:
@@ -121,15 +116,43 @@ class Player(Resource):
         }), 200
 
     def delete(self, id):
-        # TODO: delete user from db
-        return
+        try:
+            player = mongo.db.players.find_one({"_id": ObjectId(id)})
+        except:
+            return {'message': 'An error occured trying to look up this Player'}, 500
+
+        if player:
+            try:
+                mongo.db.players.delete_one({"_id": ObjectId(id)})
+            except:
+                return {'message': 'An error occured trying to delete this Player'}, 500
+            return {'message': 'Player was deleted'}, 200
+        return {'message': 'Player not found'}, 404
 
 
 class PlayerList(Resource):
     def get(self, game_id):
-        # TODO: look up players that with a specific game_id
-        return
+        try:
+            game = mongo.db.games.find_one({"_id": ObjectId(game_id)})
+        except:
+            return {'message': 'An error occured trying to look up this Game'}, 500
+        
+        if(game):
+            players = mongo.db.players.find({'game_id':ObjectId(game_id)})
+            if(players):
+                return json_util._json_convert(players), 200
+        return {'message': 'Game not found'}, 404
 
     def delete(self, game_id):
-        # TODO: look up players that with a specific game_id and delete them
-        return
+        try:
+            game = mongo.db.games.find_one({"_id": ObjectId(game_id)})
+        except:
+            return {'message': 'An error occured trying to look up this Game'}, 500
+
+        if game:
+            try:
+                mongo.db.players.delete({"game_id": ObjectId(game_id)})
+            except:
+                return {'message': 'An error occured trying to delete Players from this game'}, 500
+            return {'message': 'Players were deleted'}, 200
+        return {'message': 'Game not found'}, 404
