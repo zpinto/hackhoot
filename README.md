@@ -12,7 +12,7 @@ The backend to a simple server version of Kahoot. Everything is timer based, suc
 
 ## Game Flow
 
-![#flow.png]
+![flow](flow.png)
 
 ## Documentation
 
