@@ -26,6 +26,7 @@ Link: localhost:5000/
 ### Player
 
 **GET /player/<playerId>**
+
 Get player
 
 ```
@@ -39,6 +40,7 @@ RETURNS:
 ```
 
 **POST /createplayer/**
+
 Create player in game
 
 ```
@@ -56,6 +58,7 @@ RETURNS:
 ```
 
 **PUT /player/<playerId>**
+
 Answer a question from player
 
 ```
@@ -72,6 +75,7 @@ RETURNS:
 ```
 
 **DELETE /player/<playerId>**
+
 Deletes player
 
 ```
@@ -82,6 +86,7 @@ RETURNS:
 ### Game
 
 **GET /game/<gameId>**
+
 Get a game
 
 ```
@@ -100,6 +105,7 @@ RESPONSE:
 ```
 
 **POST /creategame/**
+
 Create a game
 
 ```
@@ -122,6 +128,7 @@ RETURNS:
 ```
 
 **PUT /game/<gameId>**
+
 Update game status(start game, next question, end)
 
 ```
@@ -141,6 +148,7 @@ RETURNS:
 ```
 
 **DELETE /game/<gameId>**
+
 Delete game with specific Id
 
 ```
@@ -151,6 +159,8 @@ RETURNS:
 ### Question
 
 **POST /createquestions/**
+
+Create question
 
 ```
 PARAMS:
@@ -172,15 +182,19 @@ RETURNS:
 
 **POST /questions/**
 
+Create multiple questions
+
 ```
 PARAMS:
-"questions"                 : A list of json serialized questions
+"questions"                 : A list of json serialized questions, format in /createquestions/
 
 RETURNS:
 "questions"                 : The list of questions back
 ```
 
 **DELETE /questions/**
+
+Delete question
 
 ```
 RETURNS:
