@@ -32,7 +32,7 @@ Get player
 ```
 RETURNS:
 
-"\_id"                      : Array with \$oid key with Player ID
+"_id"                      : Array with \$oid key with Player ID
 "name"                      : String
 "game_id"                   : Game ID
 "points"                    : Points that player has
@@ -50,7 +50,7 @@ PARAMS:
 "name"                      : String # required
 
 RETURNS:
-"\_id"                      : Array with \$oid key with Player ID
+"_id"                      : Array with \$oid key with Player ID
 "name"                      : String
 "game_id"                   : Game ID
 "points"                    : Points that player has, default 0
@@ -91,7 +91,7 @@ Get a game
 
 ```
 RESPONSE:
-"\_id"                      : Array with $oid key with Game ID
+"_id"                      : Array with $oid key with Game ID
 "time_limit"                : Number
 "game_state"                : Game status, waiting, in play, done
 "questions"                 : Questions array
@@ -114,7 +114,7 @@ PARAMS:
 "time_limit" : Number required, time limit for each question
 
 RETURNS:
-"\_id"                      : Array with $oid key with Game ID
+"_id"                      : Array with $oid key with Game ID
 "time_limit"                : Number
 "game_state"                : Game status, waiting, in play, done
 "questions"                 : Questions array
