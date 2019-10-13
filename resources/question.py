@@ -115,11 +115,13 @@ class QuestionList(Resource):
                     "D": question['D'],
                     "answer": question['answer']
                 }).inserted_id
+                question_created = mongo.db.questions.find_one(
+                    {"_id": question_id})
                 questions_created.append(mongo.db.questions.find_one({"_id": question_id}))
         except:
             return {'message': 'An error occured creating the Questions'}, 500
 
-        return json_util._json_convert(questions_created), 201
+        return json_util._json_convert({"questions":questions_created}), 201
 
 # class QuestionSetRegister(Resource):
 #     parser = reqparse.RequestParser()
