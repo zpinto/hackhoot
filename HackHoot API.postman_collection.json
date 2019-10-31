@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f1714174-7e4f-4d87-a822-f5bb5c06a834",
+		"_postman_id": "fb0bb7d3-ed83-4db8-ae37-c98d83b887e2",
 		"name": "HackHoot API",
 		"description": "This is the backend for HackHoot!",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -39,14 +39,18 @@
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "{{url}}/question/5d944ed6f8148d2d55cf93ba",
+					"raw": "{{url}}/question/5da2d46080a35099c77febfe",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"question",
-						"5d944ed6f8148d2d55cf93ba"
+						"5da2d46080a35099c77febfe"
 					]
 				},
 				"description": "Gets the question from the question bank by id"
@@ -58,6 +62,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{url}}/questions",
 					"host": [
@@ -104,14 +112,18 @@
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "{{url}}/game/5d966a1d94a17dd839c223d8",
+					"raw": "{{url}}/game/5da2d46f80a35099c77febff",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"game",
-						"5d966a1d94a17dd839c223d8"
+						"5da2d46f80a35099c77febff"
 					]
 				},
 				"description": "Gets the game based on the given id"
@@ -123,6 +135,10 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{url}}/game/5d945e570dce3097e6b29d8d",
 					"host": [
@@ -148,14 +164,18 @@
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "{{url}}/game/5d966a1d94a17dd839c223d8",
+					"raw": "{{url}}/game/5d9e557047162e7731454ebb",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"game",
-						"5d966a1d94a17dd839c223d8"
+						"5d9e557047162e7731454ebb"
 					]
 				},
 				"description": "Increases the cur_question by 1 and changes times associated with the timer."
@@ -175,7 +195,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"game_id\": \"5d966a1d94a17dd839c223d8\",\n\t\"name\": \"John\"\n}"
+					"raw": "{\n\t\"game_id\": \"5da2d46f80a35099c77febff\",\n\t\"name\": \"Zach\"\n}"
 				},
 				"url": {
 					"raw": "{{url}}/createplayer",
@@ -187,6 +207,117 @@
 					]
 				},
 				"description": "Creates a Player under a certain Game"
+			},
+			"response": []
+		},
+		{
+			"name": "/player/<string:id>",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"answer\":\"A\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/player/5da1345dfc265a5932f28fff",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"player",
+						"5da1345dfc265a5932f28fff"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/questions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"questions\":[\n\t{\n\t\"question\": \"What is the best color?\",\n\t\"A\": \"Red\",\n\t\"B\": \"Blue\",\n\t\"C\": \"Green\",\n\t\"D\": \"Yellow\",\n\t\"answer\": \"B\"\n\t},\n\t{\n\t\"question\": \"What is the best color?\",\n\t\"A\": \"Red\",\n\t\"B\": \"Blue\",\n\t\"C\": \"Green\",\n\t\"D\": \"Yellow\",\n\t\"answer\": \"B\"\n\t}\n]\n}"
+				},
+				"url": {
+					"raw": "{{url}}/questions",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/player/<string:id>",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/player/5da2d48380a35099c77fec00",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"player",
+						"5da2d48380a35099c77fec00"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/player/<string:id>",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/player/5da2d48380a35099c77fec00",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"player",
+						"5da2d48380a35099c77fec00"
+					]
+				}
 			},
 			"response": []
 		}
