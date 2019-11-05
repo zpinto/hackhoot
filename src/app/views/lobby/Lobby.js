@@ -34,19 +34,6 @@ function Lobby(props) {
         <p>{ lobbyId }</p>
       </div>
       <div className="lobby-content">
-        { showForm ?
-          <div>
-            <Form className="join-game-form flex-center" onSubmit={handleSubmit}>
-              <Form.Group controlId="name">
-                <Form.Control placeholder="Enter your name"></Form.Control>
-                <Form.Text>
-                  PG-13 Hard Limit
-                </Form.Text>
-              </Form.Group>
-              <Button variant="light" type="submit">Join Game</Button>
-            </Form>
-          </div>
-        : 
           <div className="registered">
             <h1>
               You are now registered as:
@@ -55,8 +42,6 @@ function Lobby(props) {
               { name } 
             </h3>
           </div>
-        }
-        
       </div>
     </div>
   );
