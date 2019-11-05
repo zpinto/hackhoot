@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import './Gameplay.scss';
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -29,24 +29,48 @@ const colors = [
   }
 ];
 
-function Gameplay() {
+function Gameplay(props) {
+  // Get questions through unique id
+  
+  const [allQuestions, setAllQuestions] = useState([]);
+  const [currQuestion, setCurrQuestion] = useState(
+    {
+      "question": "",
+      "A": "answer1",
+      "B": "answer2",
+      "C": "answer3",
+      "D": "answer4",
+      "answer": ""
+    }
+  );
+
+  const lobbyId = props.match.params.lobbyId;
+
+  const answers = colors.map(
+    (value, index) => {
+      const answer = currQuestion["ABCD"[index]]
+      return {...value, answer}
+    }
+  )
+  console.log(answers)
   return (
     <div className="Gameplay">
       <div className="gameplay-content">
         <div>
           <Trail 
-            items={colors} 
+            items={answers} 
             keys={item => item} 
             from={{opacity: 0}} 
             to={{opacity: 1}}
             duration={1000}
           >
-            {item => props => 
+            {
+              item => props => 
               <div 
                 className="flex-center" 
                 style={{...props, 'backgroundColor': item.hex}} 
               >
-                <i className={"fab fa-" + item.icon}></i>
+                 <span>{item.answer}</span> 
               </div>
             }
           </Trail>

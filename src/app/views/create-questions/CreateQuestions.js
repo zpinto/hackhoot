@@ -41,22 +41,23 @@ function CreateQuestions(props) {
     })
   }
 
-  function handleSubmit(e) {
-
-    // TODO: POST /creategame/ --> get lobbyId from response and navigate to start-game
-    let lobbyId = 1
-    props.history.push('/admin/start-game/' + lobbyId)
+  async function handleSubmit(e) {
+    e.preventDefault()
+    let data;
+    try {
+      data = await axios.post('/creategame', {"time_limit": 60})
+      .then(res => {
+        return res.data;
+      })
+      props.history.push('/admin/start-game/' + data._id["$oid"])
+    }
+    catch(err) {
+      console.log(err)
+    } 
   }
 
   function createQuestion(q) {
-    // TODO: make this work lol
-    axios.post('localhost:5000/createquestion', {q})
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log("error");
-      });
+    axios.post('/createquestion', q)
   }
 
   return (

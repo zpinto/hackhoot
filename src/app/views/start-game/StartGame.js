@@ -20,7 +20,7 @@ function Admin(props) {
       "answer": ""
     }
   );
-
+  
   // TODO: get time_limit from GET /game/ --> setTimeLimit(time_limit)
   // setCurQuestion(response.questions[response.cur_question])
   // should this be rerendered on the same page?? 
