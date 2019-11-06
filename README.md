@@ -1,3 +1,50 @@
+# HackHoot Frontend
+Welcome to the HackHoot Frontend Workshop! It's not quite finished yet, but feel free to take a look. So far only the admin side is done, but the rest will be done soon!
+
+## What will be covered in this workshop?
+Basic CSS/HTML
+- Form creation (mainly text boxes and radio buttons)
+- Basic styling (flex boxes included)
+React hooks/state management
+React Components
+HTTP requests using Axios
+Promises + Async/Await
+Mapping
+
+## Outline of this Workshop
+To Be Completed.
+
+## Structure of HackHoot Frontend
+To Be Completed. The main files we will be covering in this workshop are located in src\app\views\create-questions
+
+## Flow of HackHoot Frontend
+There are two sides to this application: the admin side, and the player side.
+
+### Admin
+#### admin/createquestions/
+This is the starting page where the admin creates all the questions for the game. It has the functionality of a TODO list and will be the page covered in this workshop.
+
+Upon creating the questions and clicking submit, the game will be created and the GameId will be sent in the response. The site will then reroute to `admin/start-game/:gameId`.
+
+#### admin/start-game/:gameId
+This page only exists to display the gameId. The game will stay on this page for the duration of the time_limit before advancing the game. Players have until the time_limit runs out to join the game. Site is rerouted to `admin/play-game/:gameId`.
+
+#### admin/play-game/:gameId
+This page is responsible for displaying the question and answer choices as well as the scores after each question. It re-renders between the two displays. Each display is shown for the duration of the time_limit before advancing the game.
+
+### Player
+this side of the application might be subject to change.
+
+#### lobby/
+The player is greeted by this page upon entering the site. They are prompted with two text boxes: playerName and gameId. When the player hits submit, they are registered to the game and the site stays on the page until the timer runs out on the admin side.
+
+#### gameplay/
+This page consists of four buttons. Players click their answer, and the buttons are disabled until the next question. Once the timer runs out, the page displays whether the player was wrong or right. After the time runs out again, it renders the four buttons again.
+
+#### final-score/
+This page displays the player's final score and nothing else.
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

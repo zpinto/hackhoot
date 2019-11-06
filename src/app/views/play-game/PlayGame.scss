@@ -55,3 +55,29 @@
     }
   }
 }
+
+
+.question {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 10px;
+  width: calc(100% - 10px);
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    font-size: 1.2em;
+
+    .letter {
+      margin-bottom: 0;
+      margin-right: 3px;
+    }
+  }
+}

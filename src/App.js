@@ -10,7 +10,8 @@ import {
   Lobby,
   Gameplay,
   CreateQuestions,
-  StartGame
+  StartGame,
+  PlayGame
 } from 'app/views';
 
 function App() {
@@ -20,10 +21,11 @@ function App() {
         <Switch>
           <Route exact path='/' component={Home}/>
           <Route exact path='/admin' component={Admin}/>
-          <Route exact path='/lobby/:lobbyId' component={Lobby}/>
-          <Route exact path='/gameplay/:lobbyId' component={Gameplay}/>
+          <Route exact path='/lobby/:gameId' component={Lobby}/>
+          <Route exact path='/gameplay/:gameId' component={Gameplay}/>
           <Route exact path='/admin/create-questions' component={CreateQuestions}/>
-          <Route exact path='/admin/start-game/:lobbyId' component={StartGame}/> 
+          <Route exact path='/admin/start-game/:gameId' component={StartGame}/> 
+          <Route exact path='/admin/play-game/:gameId' component={PlayGame}/>
         </Switch>
       </Router>
     </div>

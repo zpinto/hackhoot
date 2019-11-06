@@ -1,42 +1,50 @@
 import React, { useState, useEffect }  from "react";
-import { Link } from "react-router-dom";
 import './StartGame.scss';
 
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Timer from "../../components/timer/Timer";
 import axios from "axios";
 
-function Admin(props) {
+function StartGame(props) {
 
-  const lobbyId = props.match.params.lobbyId;
+  const gameId = props.match.params.gameId;
+  const [initialGet, setInitialGet] = useState(false);
   const [timeLimit, setTimeLimit] = useState(60);
-  const [allQuestions, setAllQuestions] = useState([]);
-  const [curQuestion, setCurQuestion] = useState(-1);
-  //show current questions after timer
 
-  // TODO: get time_limit from GET /game/ --> setTimeLimit(time_limit)
-  // setCurQuestion(response.questions[response.cur_question])
-  // should this be rerendered on the same page?? 
+  function findTimeLimit () {
+    setInitialGet(true);
+    axios.get('/game/' + gameId).then(res => {
+      setTimeLimit(res.data["time_limit"]);
+    }).catch(err => {
+      console.log("Failed to GET /game");
+    });
+  }
+
   useEffect(() => {
-    axios.get('/game').then((res) => {
-      setAllQuestions([...res.data.questions])
-      setCurQuestion(0);
-    })
-  });
+    if (!initialGet) findTimeLimit();
+    if (!timeLimit) {
+      axios.post('/game/' + gameId).catch(err => {
+        console.log("Failed to update gamestate");
+      });
+      props.history.push('/admin/play-game/' + gameId);
+      return;
+    }
+    const intervalId = setInterval(() => {
+      setTimeLimit(timeLimit - 1);
+    }, 1000);
 
-  
+    return () => clearInterval(intervalId);
+  }, [timeLimit]);
+
   return (
     <div className="Admin">
       <div className="admin-card">
         <div>
-          <div className="timer"><Timer seconds={timeLimit}></Timer></div>
+          <div className="timer">{timeLimit}</div>
           <div className="game-title">
             <h1>HackHoot</h1>
             <p> Administrative Portal </p>
           </div>
           <div className="game-form">
-            <p className="game-id">{lobbyId}</p>
+            <p className="game-id">{gameId}</p>
           </div>
         </div>
       </div>
@@ -44,4 +52,4 @@ function Admin(props) {
   );
 }
 
-export default Admin;
+export default StartGame;

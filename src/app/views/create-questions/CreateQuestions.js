@@ -1,5 +1,4 @@
 import React, { useState }  from "react";
-import { Link } from "react-router-dom";
 import axios from 'axios';
 import './CreateQuestions.scss';
 
@@ -8,56 +7,53 @@ import Button from 'react-bootstrap/Button';
 
 function CreateQuestions(props) {
 
-  const [timeLimit, setTimeLimit] = useState([]);
   const [allQuestions, setAllQuestions] = useState([]);
   const [question, setQuestion] = useState(
     {
-      "question": "",
-      "A": "",
-      "B": "",
-      "C": "",
-      "D": "",
-      "answer": ""
+      'question': '',
+      'A': '',
+      'B': '',
+      'C': '',
+      'D': '',
+      'answer': ''
     }
   );
   
   function addQuestion() {
     setAllQuestions([...allQuestions, question]);
     setQuestion({
-      "question": "",
-      "A": "",
-      "B": "",
-      "C": "",
-      "D": "",
-      "answer": ""
+      'question': '',
+      'A': '',
+      'B': '',
+      'C': '',
+      'D': '',
+      'answer': ''
     })
-    createQuestion(question)
+    createQuestion(question);
   }
 
   function handleInputChange(e) {
     setQuestion({
       ...question,
       [e.target.name]: e.target.value
-    })
+    });
   }
 
   async function handleSubmit(e) {
-    e.preventDefault()
-    let data;
-    try {
-      data = await axios.post('/creategame', {"time_limit": 60})
-      .then(res => {
-        return res.data;
-      })
-      props.history.push('/admin/start-game/' + data._id["$oid"])
-    }
-    catch(err) {
-      console.log(err)
-    } 
+    e.preventDefault();
+    axios.post('/creategame', {'time_limit': 60}).then(res => {
+      props.history.push('/admin/start-game/' + res._id["$oid"]);
+    }).catch(err => {
+      console.log("could not create game");
+    });
   }
 
   function createQuestion(q) {
-    axios.post('/createquestion', q)
+    axios.post('/createquestion', q).then(res => {
+      console.log(res.data);
+    }).catch(err => {
+      console.log("could not create question");
+    });
   }
 
   return (
@@ -113,7 +109,6 @@ function CreateQuestions(props) {
                 ))}
               </div>
 
-              
               <Button onClick={handleSubmit} className="create-game-btn" type="submit">Start Game</Button>
 
             </Form>
