@@ -2,14 +2,14 @@
 Welcome to the HackHoot Frontend Workshop! It's not quite finished yet, but feel free to take a look. So far only the admin side is done, but the rest will be done soon!
 
 ## What will be covered in this workshop?
-Basic CSS/HTML
+- Basic CSS/HTML
 - Form creation (mainly text boxes and radio buttons)
 - Basic styling (flex boxes included)
-React hooks/state management
-React Components
-HTTP requests using Axios
-Promises + Async/Await
-Mapping
+- React hooks/state management
+- React Components
+- HTTP requests using Axios
+- Promises + Async/Await
+- Mapping
 
 ## Outline of this Workshop
 To Be Completed.
@@ -44,7 +44,7 @@ This page consists of four buttons. Players click their answer, and the buttons 
 #### final-score/
 This page displays the player's final score and nothing else.
 
-
+## Default README beyond this point
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
