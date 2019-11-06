@@ -48,11 +48,11 @@ function Home(props) {
             </Form.Text>
           </Form.Group>
           <Form.Group controlId="name">
-                <Form.Control placeholder="Enter your name"></Form.Control>
-                <Form.Text>
-                  PG-13 Hard Limit
-                </Form.Text>
-            </Form.Group>
+            <Form.Control placeholder="Enter your name"></Form.Control>
+            <Form.Text>
+              PG-13 Hard Limit
+            </Form.Text>
+          </Form.Group>
           <Button variant="light" type="submit">Join Game</Button>
         </Form>
         :

@@ -21,7 +21,7 @@ function StartGame(props) {
   useEffect(() => {
     if (!initialGet) findTimeLimit();
     if (!timeLimit) {
-      axios.post('/game/' + gameId).catch(err => {
+      axios.put('/game/' + gameId).catch(err => {
         console.log("Failed to update gamestate");
       });
       props.history.push('/admin/play-game/' + gameId);

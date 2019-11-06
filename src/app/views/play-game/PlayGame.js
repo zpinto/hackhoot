@@ -55,7 +55,7 @@ function PlayGame(props) {
   useEffect(() => {
     if (!initialGet) renderQuestion();
     if (!timeLimit) {
-      axios.post('/game/' + gameId).catch(res => {
+      axios.put('/game/' + gameId).catch(res => {
         console.log("Failed to update gamestate");
         if (displayQuestion) {
           renderScores();

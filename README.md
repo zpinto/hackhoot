@@ -35,7 +35,7 @@ This page is responsible for displaying the question and answer choices as well 
 ### Player
 this side of the application might be subject to change.
 
-#### lobby/
+#### /
 The player is greeted by this page upon entering the site. They are prompted with two text boxes: playerName and gameId. When the player hits submit, they are registered to the game and the site stays on the page until the timer runs out on the admin side.
 
 #### gameplay/
