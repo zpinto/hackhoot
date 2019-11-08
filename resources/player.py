@@ -49,8 +49,9 @@ class PlayerCreator(Resource):
 
         # add the Player to the game
         try:
+            game['players'].append(player_created)
             mongo.db.games.update_one({"_id": ObjectId(data['game_id'])}, {
-                                      "$set": {"players": game['players'] + [str(player_id)]}})
+                                      "$set": {"players": game['players']}})
         except:
             return {'message': 'An error occured trying to update this Game with the new Player'}, 500
 

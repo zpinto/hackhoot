@@ -21,9 +21,9 @@ class GameCreator(Resource):
 
         try:
             count = mongo.db.questions.count()
-            if count < 10:
-                return {'message': 'Less than 10 questions found'}, 500
-            question_indices = random.sample(range(count),10)
+            if count < 1:
+                return {'message': 'No questions found'}, 500
+            question_indices = random.sample(range(count),min(10, count))
             questions_db = mongo.db.questions.find()
             questions = [questions_db[x]
                 for x in range(0,count)
@@ -54,7 +54,6 @@ class Game(Resource):
             game = mongo.db.games.find_one({"_id": ObjectId(id)})
         except:
             return {'message': 'An error occured trying to look up this Game'}, 500
-
         if game:
             return json_util._json_convert(game), 200
         return {'message': 'Game not found'}, 404
