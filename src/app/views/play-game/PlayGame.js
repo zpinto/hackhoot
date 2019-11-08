@@ -25,28 +25,19 @@ function PlayGame(props) {
   function renderQuestion () {
     setInitialGet(true);
     axios.get('/game/' + gameId).then(res => {
-      setTimeLimit(res.data["time_limit"]);
+      setTimeLimit(res.data["time_limit"] - 10);
       setCurQuestion(res.data["questions"][res.data["cur_question"]])
+      setDisplayQuestion(!displayQuestion);
     }).catch(err => {
       console.log("Failed to GET /game");
     });
   }
 
-  function getPlayer (playerId) {
-    axios.get('/player/' + playerId).then(res => {
-      return {
-        name: res.data.name,
-        score: res.data.score
-      }
-    }).catch(err => {
-      console.log("failed to GET /player");
-    });
-  }
-
   function renderScores () {
     axios.get('/game/' + gameId).then(res => {
-      setTimeLimit(res.data["time_limit"]);
+      setTimeLimit(10);
       setPlayersArr(res.data["players"]);
+      setDisplayQuestion(!displayQuestion);
     }).catch(err => {
       console.log("failed to GET /game");
     });
@@ -54,7 +45,7 @@ function PlayGame(props) {
 
   useEffect(() => {
     if (!initialGet) renderQuestion();
-    if (!timeLimit) {
+    if (!timeLimit || timeLimit < 1) {
       axios.put('/game/' + gameId).catch(res => {
         console.log("Failed to update gamestate");
         if (displayQuestion) {
@@ -63,7 +54,6 @@ function PlayGame(props) {
           renderQuestion();
         }
       });
-      setDisplayQuestion(!displayQuestion);
     }
     const intervalId = setInterval(() => {
       setTimeLimit(timeLimit - 1);
@@ -97,7 +87,7 @@ function PlayGame(props) {
             <p className="question">Scores</p>
             <div>
               {playersArr.map((p, i) => (
-                <div index={i} key={i}>
+                <div index={i.name} key={i.score}>
                   <p>{p}</p>
                 </div>
               ))}
