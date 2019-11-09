@@ -23,11 +23,11 @@ class GameCreator(Resource):
             count = mongo.db.questions.count()
             if count < 1:
                 return {'message': 'No questions found'}, 500
-            question_indices = random.sample(range(count),min(10, count))
+            question_indices = random.sample(range(count), min(10, count))
             questions_db = mongo.db.questions.find()
             questions = [questions_db[x]
-                for x in range(0,count)
-                if x in question_indices]
+                         for x in range(0, count)
+                         if x in question_indices]
 
             game_id = mongo.db.games.insert_one({
                 "time_limit": data['time_limit'],
@@ -35,10 +35,10 @@ class GameCreator(Resource):
                 "questions": questions,
                 "players": [],
                 "cur_question": -1,
-                "cur_time": datetime.datetime.now(),
-                "cur_question_end_time": datetime.datetime.now() + datetime.timedelta(seconds=data['time_limit']),
-                "next_question_start_time": datetime.datetime.now() + datetime.timedelta(seconds=60),
-                "next_question_end_time": datetime.datetime.now() + datetime.timedelta(seconds=(60 + data['time_limit']))
+                "cur_time": datetime.datetime.utcnow(),
+                "cur_question_end_time": datetime.datetime.utcnow() + datetime.timedelta(seconds=data['time_limit']),
+                "next_question_start_time": datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
+                "next_question_end_time": datetime.datetime.utcnow() + datetime.timedelta(seconds=(60 + data['time_limit']))
             }).inserted_id
             game_created = mongo.db.games.find_one({"_id": game_id})
         except:
@@ -79,10 +79,10 @@ class Game(Resource):
             updates['game_state'] = 'done'
         # set the cur_question_end_time equal to time_limit seconds after the current time
         # set the next_question_time equal to time_limit + 10 seconds after the current time
-        updates['cur_time'] = datetime.datetime.now()
-        updates['cur_question_end_time'] = datetime.datetime.now(
+        updates['cur_time'] = datetime.datetime.utcnow()
+        updates['cur_question_end_time'] = datetime.datetime.utcnow(
         ) + datetime.timedelta(seconds=game['time_limit'])
-        updates['next_question_start_time'] = datetime.datetime.now(
+        updates['next_question_start_time'] = datetime.datetime.utcnow(
         ) + datetime.timedelta(seconds=(game['time_limit'] + 10))
         updates['next_question_end_time'] = updates['next_question_start_time'] + \
             datetime.timedelta(seconds=game['time_limit'])

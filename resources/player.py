@@ -57,6 +57,7 @@ class PlayerCreator(Resource):
 
         return json_util._json_convert(player_created), 201
 
+
 class Player(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('answer',
@@ -73,7 +74,7 @@ class Player(Resource):
 
     def put(self, id):
         data = Player.parser.parse_args()
-        data['answer_time'] = datetime.datetime.now()
+        data['answer_time'] = datetime.datetime.utcnow()
 
         try:
             player = mongo.db.players.find_one({"_id": ObjectId(id)})
@@ -88,7 +89,7 @@ class Player(Resource):
                 {"_id": ObjectId(player['game_id'])})
         except:
             return {'message': 'An error occured trying to look up this Game'}, 500
-        
+
         # check the answers to see if they are correct
         data['points'] = 0
         data['is_correct'] = False
@@ -97,7 +98,8 @@ class Player(Resource):
             return {'message': 'The game ended'}, 423
 
         if game['questions'][game['cur_question']]['answer'] == data['answer'] and data['answer_time'] < game['cur_question_end_time']:
-            points = int(1000 - 33.3 * (data['answer_time'] - game['cur_time']).total_seconds())
+            points = int(
+                1000 - 33.3 * (data['answer_time'] - game['cur_time']).total_seconds())
             data['points'] = player['points'] + points
             data['is_correct'] = True
 
@@ -137,9 +139,9 @@ class PlayerList(Resource):
             game = mongo.db.games.find_one({"_id": ObjectId(game_id)})
         except:
             return {'message': 'An error occured trying to look up this Game'}, 500
-        
+
         if(game):
-            players = mongo.db.players.find({'game_id':ObjectId(game_id)})
+            players = mongo.db.players.find({'game_id': ObjectId(game_id)})
             if(players):
                 return json_util._json_convert(players), 200
         return {'message': 'Game not found'}, 404
