@@ -54,25 +54,13 @@ function Gameplay(props) {
     setDisplayChoices(true);
 
     axios.get("/game/"+ gameId).then(res => {
-      // const currentTime = res.data["cur_time"]["$date"]
       const now = new Date();
       const currentTime = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() , 
       now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
       const nextQuestionStartTime = res.data["next_question_start_time"]["$date"]
       const submitAnswerDeadline = nextQuestionStartTime - currentTime - 10 * 1000;
-      // const submitAnswerDeadline = res.data["time_limit"]
 
       setTimeout(function(){
-        
-        // if(answer == "e"){
-        //   let player = JSON.parse(localStorage.getItem("player"));
-        //   axios.put("/player/" + player._id["$oid"], {"answer": answer}).then((res) => {
-        //     setDisplayChoices(false);
-        //   }).catch((e)=>{
-        //     console.log("wat")
-        //   })
-        // }
-
         setDisplayChoices(false);
         
         setTimeout(function() {
@@ -100,8 +88,9 @@ function Gameplay(props) {
 
   return (
     <div className="Gameplay">
+      
+    { displayChoices ?
       <div className="gameplay-content">
-      { displayChoices ?
         <div>
           <Trail 
             items={colors} 
@@ -116,7 +105,7 @@ function Gameplay(props) {
                 className="flex-center" 
                 style={{...props, 'backgroundColor': item.hex}}
                 onClick={
-                  ()=>{answer == "e" && submitAnswer(item.title)}
+                  ()=>{answer === "e" && submitAnswer(item.title)}
                 }
               >
                  <span>{item.title}</span> 
@@ -124,17 +113,18 @@ function Gameplay(props) {
             }
           </Trail>
         </div>
-        :
-        <div>
-          {
-            isCorrect ? 
-            <div>right</div>
-            :
-            <div>wrong</div>
-          }
-        </div>
-      }
       </div>
+
+      :
+      <div>
+       {
+          isCorrect ? 
+          <div class="right"><p>right</p></div>
+          :
+          <div class="wrong"><p>wrong</p></div>
+        }
+      </div>
+    }
     </div>
   );
 }

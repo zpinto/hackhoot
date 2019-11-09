@@ -8,6 +8,38 @@
   display: flex;
   flex-direction: column;
 
+  .right {
+    height: 100vh;
+    width: 100%;
+    background-color: #42d458;
+    font-size: 2em;
+    color: #FFFFFF;
+    position: relative;
+
+    p {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .wrong {
+    height: 100vh;
+    width: 100%;
+    background-color: #fc3835;
+    font-size: 2em;
+    color: #FFFFFF;
+    position: relative;
+
+    p {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
   .gameplay-content {
     height: calc(100vh - 48px);
     width: calc(100vw - 24px);

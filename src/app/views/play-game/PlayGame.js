@@ -54,7 +54,7 @@ function PlayGame(props) {
         renderScores();
       } else {
         axios.put('/game/' + gameId).then(res => {
-          if (res.data["game_state"] != "done") {
+          if (res.data["game_state"] !== "done") {
             renderQuestion();
           } else {
             props.history.push('/admin/end-game/' + gameId);

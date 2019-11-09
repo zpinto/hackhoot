@@ -1,21 +1,30 @@
 # HackHoot Frontend
-Welcome to the HackHoot Frontend Workshop! It's not quite finished yet, but feel free to take a look. So far only the admin side is done, but the rest will be done soon!
+Welcome to the HackHoot Frontend Workshop!
 
 ## What will be covered in this workshop?
 - Basic CSS/HTML
 - Form creation (mainly text boxes and radio buttons)
 - Basic styling (flex boxes included)
 - React hooks/state management
-- React Components
 - HTTP requests using Axios
 - Promises + Async/Await
-- Mapping
+- Mapping and displaying arrays
 
 ## Outline of this Workshop
-To Be Completed.
-
-## Structure of HackHoot Frontend
-To Be Completed. The main files we will be covering in this workshop are located in src\app\views\create-questions
+- General frontend coverage
+- - HTML/CSS
+- - Javascript
+- - What are frameworks?
+- - What is React?
+- Create src\app\views\create-questions\CreateQuestions.js and src\app\views\create-questions\CreateQuestions.scss
+- Basic form creation
+- Submit button
+- Basic styling
+- Create variables
+- OnClick and OnChange functions
+- Add question to array
+- Display questions in array
+- Hook up API requests
 
 ## Flow of HackHoot Frontend
 There are two sides to this application: the admin side, and the player side.
@@ -32,6 +41,9 @@ This page only exists to display the gameId. The game will stay on this page for
 #### admin/play-game/:gameId
 This page is responsible for displaying the question and answer choices as well as the scores after each question. It re-renders between the two displays. Each display is shown for the duration of the time_limit before advancing the game.
 
+#### admin/end-game/:gameId
+This page is the last page displayed. It shows all the scores of all the players and will only display when the game_state = "done"
+
 ### Player
 this side of the application might be subject to change.
 
@@ -41,10 +53,14 @@ The player is greeted by this page upon entering the site. They are prompted wit
 #### gameplay/
 This page consists of four buttons. Players click their answer, and the buttons are disabled until the next question. Once the timer runs out, the page displays whether the player was wrong or right. After the time runs out again, it renders the four buttons again.
 
-#### final-score/
-This page displays the player's final score and nothing else.
+## Running HackHoot
+Clone both this repository and https://github.com/zpinto/hackhoot-backend. Navigate to where you cloned this repository and run `npm start`.
 
-## Default README beyond this point
+Then navigate to where you cloned hackhoot-backend and start it by first running `mongod` then running `python app.py`.
+
+Open up a browser and go to `localhost:3000/admin` to create a game. Upon creation of a game, you will be given a game ID. Open another tab and navigate to `localhost:3000/` to enter a gameId and a player name. The game will begin as questions are displayed on the admin side and answer choices on the player side.
+
+# Default README beyond this point
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
