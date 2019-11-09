@@ -97,9 +97,14 @@ class Player(Resource):
         if game['game_state'] == 'done':
             return {'message': 'The game ended'}, 423
 
+        # print(game['questions'][game['cur_question']]['answer'])
+        # print(data['answer'])
+        # print(data['answer_time'])
+        # print(game['cur_question_end_time'])
         if game['questions'][game['cur_question']]['answer'].lower() == data['answer'].lower() and data['answer_time'] < game['cur_question_end_time']:
             points = int(
                 1000 - 33.3 * (data['answer_time'] - game['cur_time']).total_seconds())
+            print(points)
             data['points'] = player['points'] + points
             data['is_correct'] = True
 
@@ -137,11 +142,12 @@ class PlayerList(Resource):
     def get(self, game_id):
         try:
             game = mongo.db.games.find_one({"_id": ObjectId(game_id)})
+            print(game_id)
         except:
             return {'message': 'An error occured trying to look up this Game'}, 500
 
         if(game):
-            players = mongo.db.players.find({'game_id': ObjectId(game_id)})
+            players = mongo.db.players.find({'game_id': game_id})
             if(players):
                 return json_util._json_convert(players), 200
         return {'message': 'Game not found'}, 404
@@ -154,7 +160,7 @@ class PlayerList(Resource):
 
         if game:
             try:
-                mongo.db.players.delete({"game_id": ObjectId(game_id)})
+                mongo.db.players.delete({"game_id": game_id})
             except:
                 return {'message': 'An error occured trying to delete Players from this game'}, 500
             return {'message': 'Players were deleted'}, 200
