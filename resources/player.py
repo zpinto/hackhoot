@@ -97,7 +97,7 @@ class Player(Resource):
         if game['game_state'] == 'done':
             return {'message': 'The game ended'}, 423
 
-        if game['questions'][game['cur_question']]['answer'] == data['answer'] and data['answer_time'] < game['cur_question_end_time']:
+        if game['questions'][game['cur_question']]['answer'].lower() == data['answer'].lower() and data['answer_time'] < game['cur_question_end_time']:
             points = int(
                 1000 - 33.3 * (data['answer_time'] - game['cur_time']).total_seconds())
             data['points'] = player['points'] + points
