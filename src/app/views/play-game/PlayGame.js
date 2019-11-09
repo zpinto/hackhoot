@@ -26,9 +26,9 @@ function PlayGame(props) {
     setInitialGet(true);
     axios.get('/game/' + gameId).then(res => {
       setTimeLimit(res.data["time_limit"] - 10);
-      setCurQuestion(res.data["questions"][res.data["cur_question"]])
-      setDisplayQuestion(!displayQuestion);
+      setCurQuestion(res.data["questions"][res.data["cur_question"]]);
     }).catch(err => {
+      
       console.log("Failed to GET /game");
     });
   }
@@ -37,23 +37,31 @@ function PlayGame(props) {
     axios.get('/game/' + gameId).then(res => {
       setTimeLimit(10);
       setPlayersArr(res.data["players"]);
-      setDisplayQuestion(!displayQuestion);
     }).catch(err => {
       console.log("failed to GET /game");
     });
   }
 
   useEffect(() => {
-    if (!initialGet) renderQuestion();
+    if (!initialGet) {
+      setInitialGet(true);
+      renderQuestion();
+    }
     if (!timeLimit || timeLimit < 1) {
-      axios.put('/game/' + gameId).catch(res => {
-        console.log("Failed to update gamestate");
-        if (displayQuestion) {
-          renderScores();
-        } else {
-          renderQuestion();
-        }
-      });
+      if (displayQuestion) {
+        renderScores();
+      } else {
+        axios.put('/game/' + gameId).then(res => {
+          if (res.data["game_state"] != "done") {
+            renderQuestion();
+          } else {
+            props.history.push('/admin/end-game/' + gameId);
+          }
+        }).catch(err => {
+          console.log("Failed to update gamestate");
+        });
+      }
+      setDisplayQuestion(!displayQuestion);
     }
     const intervalId = setInterval(() => {
       setTimeLimit(timeLimit - 1);

@@ -22,12 +22,11 @@ function StartGame(props) {
   useEffect(() => {
     if (!initialGet) findTimeLimit();
     if (!timeLimit) {
-      axios.put('/game/' + gameId).then(()=>{
+      axios.put('/game/' + gameId).then(res => {
         props.history.push('/admin/play-game/' + gameId);
       }).catch(err => {
         console.log("Failed to update gamestate");
       });
-      return;
     }
     const intervalId = setInterval(() => {
       setTimeLimit(timeLimit - 1);
