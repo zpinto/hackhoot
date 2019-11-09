@@ -64,14 +64,14 @@ function Gameplay(props) {
 
       setTimeout(function(){
         
-        if(answer == "e"){
-          let player = JSON.parse(localStorage.getItem("player"));
-          axios.put("/player/" + player._id["$oid"], {"answer": answer}).then((res) => {
-            setDisplayChoices(false);
-          }).catch((e)=>{
-            console.log("wat")
-          })
-        }
+        // if(answer == "e"){
+        //   let player = JSON.parse(localStorage.getItem("player"));
+        //   axios.put("/player/" + player._id["$oid"], {"answer": answer}).then((res) => {
+        //     setDisplayChoices(false);
+        //   }).catch((e)=>{
+        //     console.log("wat")
+        //   })
+        // }
 
         setDisplayChoices(false);
         
