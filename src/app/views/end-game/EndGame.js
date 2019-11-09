@@ -7,10 +7,10 @@ function EndGame(props) {
 
   const gameId = props.match.params.gameId;
   const [playersArr, setPlayersArr] = useState([]);
-  
+
   function renderScores () {
-    axios.get('/game/' + gameId).then(res => {
-      setPlayersArr(res.data["players"]);
+    axios.get('/player/game/' + gameId).then(res => {
+      setPlayersArr(res.data);
     }).catch(err => {
       console.log("failed to GET /game");
     });
