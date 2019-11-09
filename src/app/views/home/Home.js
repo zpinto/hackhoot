@@ -9,24 +9,33 @@ function Home(props) {
   const [showForm, setShowForm] = useState(true);
   const [name, setName] = useState("");
   const [gameKey, setGameKey] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
     setGameKey(e.target.elements.gameKey.value);
     //
+    let nextQuestionStartTime = 0;
+    let currentTime = 0
     
     // handle logic for checking if the game id is valid here
-    try
-    {
-      let player = await axios.post("/createplayer", {"game_id": gameKey, "name": name});
-      localStorage.setItem("player", player);
-      let gameData = await axios.get("/game/" + gameKey).then((res) => { return res.data });
-      let curr = new Date()
-      changePage((gameData["next_question_start_time"] -  curr)/1000);
-    }
-    catch(err){
-      console.log(err);
-    }
+    const getGame = axios.get("/game/" + gameKey).then((res) => {
+      return res.data
+    }).then((res)=>{
+      nextQuestionStartTime = res.data["next_question_start_time"]
+      currentTime = res.data["cur_time"]
+    })
+    const createPlayer = axios.post("/createplayer", {
+      "game_id": gameKey, 
+      "name": name
+    }).then((res)=>{
+      localStorage.setItem("player", res.data);
+      changePage((nextQuestionStartTime -  currentTime)/1000);
+    }).catch((e) =>{
+      setErrorMessage("game doesn't exist")
+    })
+
+    getGame.then(createPlayer);
   }
 
   function changePage(timeInMS) {
@@ -54,6 +63,7 @@ function Home(props) {
             </Form.Text>
           </Form.Group>
           <Button variant="light" type="submit">Join Game</Button>
+          <div>{errorMessage}</div>
         </Form>
         :
         <div className="registered">

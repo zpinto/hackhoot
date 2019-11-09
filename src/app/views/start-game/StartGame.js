@@ -12,7 +12,8 @@ function StartGame(props) {
   function findTimeLimit () {
     setInitialGet(true);
     axios.get('/game/' + gameId).then(res => {
-      setTimeLimit(res.data["time_limit"]);
+      console.log(res.data["cur_time"],res.data["next_question_start_time"])
+      setTimeLimit(res.data["next_question_start_time"]-res.data["cur_time"]);
     }).catch(err => {
       console.log("Failed to GET /game");
     });
@@ -21,10 +22,11 @@ function StartGame(props) {
   useEffect(() => {
     if (!initialGet) findTimeLimit();
     if (!timeLimit) {
-      axios.put('/game/' + gameId).catch(err => {
+      axios.put('/game/' + gameId).then(()=>{
+        props.history.push('/admin/play-game/' + gameId);
+      }).catch(err => {
         console.log("Failed to update gamestate");
       });
-      props.history.push('/admin/play-game/' + gameId);
       return;
     }
     const intervalId = setInterval(() => {

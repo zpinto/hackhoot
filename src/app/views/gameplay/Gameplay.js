@@ -29,43 +29,51 @@ const colors = [
     icon: 'snapchat'
   }
 ];
+
 //create questions
 function Gameplay(props) {
   // Get questions through unique id
-  const [timeLimit, setTimeLimit] = useState(60)
-  const [displayAnswer, setDisplayAnswer] = useState(false)
+  const [displayChoices, setDisplayChoices] = useState(false)
+  const [answer, setAnswer] = useState("e")
+  const [isCorrect, setIsCorrect] = useState("e")
 
   const lobbyId = props.match.params.lobbyId;
   
   useEffect(()=>{
-      //changePage((gameData["next_question_start_time"] -  curr)/1000);
     axios.get("/game/"+ lobbyId).then(res => {
-      let curr = new Date()
-      setTimeLimit((res.data["next_question_start_time"] -  curr)/1000)
-      setTimeout(function() {
-        setDisplayAnswer(true);  
-        setTimeout(function() {
-          props.history.push('/gameplay/' + lobbyId);
-        }, 10);
-      }, timeLimit);
-      
+      const currentTime = res.data["curr_time"]
+      const nextQuestionStartTime = res.data["next_question_start_time"]
+      const submitAnswerDeadline = nextQuestionStartTime - currentTime
+      setDisplayChoices(true);
+
+      setTimeout(function(){
+        setDisplayChoices(false);
+        if(answer == "e"){
+          axios.put("/player", {"_id": player._id, "answer": answer}).then((res) => {
+            setIsCorrect(res.data["is_correct"])
+          }).catch((e)=>{
+            console.log("wat")
+          })
+        }
+        // milliseconds, 10 seconds for displaying correct/incorrect
+      }, submitAnswerDeadline/1000 - 10);
     })
   })
 
   async function submitAnswer(answer){
     let player = localStorage.getItem("player");
-    try {
-      let result = await axios.put("/player", {"_id": player._id, "answer": answer})
-      
-    } catch(err){
-      console.log(err);
-    }
-
+    axios.put("/player", {"_id": player._id, "answer": answer}).then((res) => {
+      setAnswer(answer)
+      setIsCorrect(res.data["is_correct"])
+    }).catch((err)=>{
+      console.log("wat")
+    })
   }
+
   return (
     <div className="Gameplay">
       <div className="gameplay-content">
-      { displayAnswer ?
+      { displayChoices ?
         <div>
           <Trail 
             items={colors} 
@@ -79,7 +87,9 @@ function Gameplay(props) {
               <div 
                 className="flex-center" 
                 style={{...props, 'backgroundColor': item.hex}}
-                onClick={()=>{submitAnswer(item.title)}}
+                onClick={
+                  ()=>{answer == "e" && submitAnswer(item.title)}
+                }
               >
                  <span>{item.title}</span> 
               </div>
@@ -88,6 +98,9 @@ function Gameplay(props) {
         </div>
         :
         <div>
+          {
+            //show green or red screen for right or wrong like the traffic lights 
+          }
           qpwoeiryqpwoeiryqwpoy
         </div>
       }
