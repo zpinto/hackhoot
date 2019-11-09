@@ -33,8 +33,8 @@ function EndGame(props) {
             <p className="question">Scores</p>
             <div>
               {playersArr.map((p, i) => (
-                <div index={i.name} key={i.score}>
-                  <p>{p}</p>
+                <div index={i} key={i}>
+                  <p>{p.name}: {p.score}</p>
                 </div>
               ))}
             </div>
