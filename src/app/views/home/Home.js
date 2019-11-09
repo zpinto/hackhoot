@@ -33,7 +33,6 @@ function Home(props) {
       currentTime = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() , 
       now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
       console.log("cur time:", currentTime)
-      // console.log(fcurrentTime);
       console.log("next q:", nextQuestionStartTime);
     })
     const createPlayer = axios.post("/createplayer", {
@@ -42,7 +41,7 @@ function Home(props) {
     }).then((res)=>{
       localStorage.setItem("player", JSON.stringify(res.data));
       setShowForm(false);
-      changePage((nextQuestionStartTime -  currentTime + 3000), tempGameKey);
+      changePage((nextQuestionStartTime -  currentTime + 5000), tempGameKey);
     }).catch((e) =>{
       setErrorMessage("game doesn't exist")
     })
