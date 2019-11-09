@@ -36,12 +36,16 @@ function Gameplay(props) {
   const [displayChoices, setDisplayChoices] = useState(true)
   const [answer, setAnswer] = useState("e")
   const [isCorrect, setIsCorrect] = useState(false)
+  const [init, setInit] = useState(false);
 
   const gameId = props.match.params.gameId;
   console.log(props.match.params);
   
   useEffect(()=>{
-    cycle();
+    if (!init) {
+      cycle();
+      setInit(true);
+    }
   })
 
   function cycle() {
@@ -56,15 +60,13 @@ function Gameplay(props) {
       now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
       const nextQuestionStartTime = res.data["next_question_start_time"]["$date"]
       const submitAnswerDeadline = nextQuestionStartTime - currentTime - 10 * 1000;
-      console.log(submitAnswerDeadline)
+      // const submitAnswerDeadline = res.data["time_limit"]
 
       setTimeout(function(){
         
         if(answer == "e"){
           let player = JSON.parse(localStorage.getItem("player"));
-          console.log(player); //[Object object]
           axios.put("/player/" + player._id["$oid"], {"answer": answer}).then((res) => {
-            setIsCorrect(res.data["is_correct"])
             setDisplayChoices(false);
           }).catch((e)=>{
             console.log("wat")
@@ -75,22 +77,26 @@ function Gameplay(props) {
         
         setTimeout(function() {
           cycle();
-        }, 10 * 1000)
+        }, 13 * 1000)
         // milliseconds, 10 seconds for displaying correct/incorrect
       }, submitAnswerDeadline);
     })
   }
 
-  async function submitAnswer(answer){
+  async function submitAnswer(fanswer){
     let player = JSON.parse(localStorage.getItem("player"));
     console.log(player)
-    axios.put("/player/" + player._id["$oid"], {"answer": answer}).then((res) => {
-      setAnswer(answer)
+    axios.put("/player/" + player._id["$oid"], {"answer": fanswer}).then((res) => {
+
+      console.log(res.data)
+      setAnswer(fanswer)
       setIsCorrect(res.data["is_correct"])
     }).catch((err)=>{
       console.log("wat")
     })
   }
+
+  console.log(isCorrect);
 
   return (
     <div className="Gameplay">

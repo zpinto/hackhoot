@@ -14,8 +14,8 @@ function Home(props) {
   async function handleSubmit(e) {
     e.preventDefault();
     let tempGameKey = e.target.elements.gameKey.value 
-    let name = e.target.elements.name.value 
-
+    let tempName = e.target.elements.name.value 
+    setName(tempName)
     setGameKey(tempGameKey);
     
     //
@@ -23,7 +23,6 @@ function Home(props) {
     let currentTime = 0
     
     // handle logic for checking if the game id is valid here
-    console.log(tempGameKey);
     const getGame = axios.get("/game/" + tempGameKey).then((res) => {
       return res.data
     }).then((data)=>{
@@ -39,11 +38,11 @@ function Home(props) {
     })
     const createPlayer = axios.post("/createplayer", {
       "game_id": tempGameKey, 
-      "name": name
+      "name": tempName
     }).then((res)=>{
       localStorage.setItem("player", JSON.stringify(res.data));
       setShowForm(false);
-      changePage((nextQuestionStartTime -  currentTime), tempGameKey);
+      changePage((nextQuestionStartTime -  currentTime + 3000), tempGameKey);
     }).catch((e) =>{
       setErrorMessage("game doesn't exist")
     })

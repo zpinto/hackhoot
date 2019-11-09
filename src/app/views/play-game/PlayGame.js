@@ -34,9 +34,11 @@ function PlayGame(props) {
   }
 
   function renderScores () {
-    axios.get('/game/' + gameId).then(res => {
+    axios.get('/player/game/' + gameId).then(res => {
       setTimeLimit(10);
-      setPlayersArr(res.data["players"]);
+      console.log(res.data)
+      setPlayersArr(res.data);
+      
     }).catch(err => {
       console.log("failed to GET /game");
     });
