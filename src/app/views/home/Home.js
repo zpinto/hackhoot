@@ -23,7 +23,7 @@ function Home(props) {
     let currentTime = 0
     
     // handle logic for checking if the game id is valid here
-    const getGame = axios.get("/game/" + tempGameKey).then((res) => {
+    axios.get("/game/" + tempGameKey).then((res) => {
       return res.data
     }).then((data)=>{
       nextQuestionStartTime = data["next_question_start_time"]["$date"]
@@ -34,18 +34,19 @@ function Home(props) {
       now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
       console.log("cur time:", currentTime)
       console.log("next q:", nextQuestionStartTime);
+      axios.post("/createplayer", {
+        "game_id": tempGameKey, 
+        "name": tempName
+      }).then((res)=>{
+        localStorage.setItem("player", JSON.stringify(res.data));
+        setShowForm(false);
+        changePage((nextQuestionStartTime -  currentTime + 5000), tempGameKey);
+      }).catch((e) =>{
+        setErrorMessage("game doesn't exist")
+      })
     })
-    const createPlayer = axios.post("/createplayer", {
-      "game_id": tempGameKey, 
-      "name": tempName
-    }).then((res)=>{
-      localStorage.setItem("player", JSON.stringify(res.data));
-      setShowForm(false);
-      changePage((nextQuestionStartTime -  currentTime + 5000), tempGameKey);
-    }).catch((e) =>{
-      setErrorMessage("game doesn't exist")
-    })
-    getGame.then(createPlayer);
+
+    // getGame.then();
   }
 
   function changePage(timeInMS, gameKey) {
