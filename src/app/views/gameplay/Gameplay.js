@@ -33,36 +33,58 @@ const colors = [
 //create questions
 function Gameplay(props) {
   // Get questions through unique id
-  const [displayChoices, setDisplayChoices] = useState(false)
+  const [displayChoices, setDisplayChoices] = useState(true)
   const [answer, setAnswer] = useState("e")
-  const [isCorrect, setIsCorrect] = useState("e")
+  const [isCorrect, setIsCorrect] = useState(false)
 
-  const lobbyId = props.match.params.lobbyId;
+  const gameId = props.match.params.gameId;
+  console.log(props.match.params);
   
   useEffect(()=>{
-    axios.get("/game/"+ lobbyId).then(res => {
-      const currentTime = res.data["curr_time"]
-      const nextQuestionStartTime = res.data["next_question_start_time"]
-      const submitAnswerDeadline = nextQuestionStartTime - currentTime
-      setDisplayChoices(true);
+    cycle();
+  })
+
+  function cycle() {
+    setIsCorrect(false)
+    setAnswer("e")
+    setDisplayChoices(true);
+
+    axios.get("/game/"+ gameId).then(res => {
+      // const currentTime = res.data["cur_time"]["$date"]
+      const now = new Date();
+      const currentTime = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() , 
+      now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+      const nextQuestionStartTime = res.data["next_question_start_time"]["$date"]
+      const submitAnswerDeadline = nextQuestionStartTime - currentTime - 10 * 1000;
+      console.log(submitAnswerDeadline)
 
       setTimeout(function(){
-        setDisplayChoices(false);
+        
         if(answer == "e"){
-          axios.put("/player", {"_id": player._id, "answer": answer}).then((res) => {
+          let player = JSON.parse(localStorage.getItem("player"));
+          console.log(player); //[Object object]
+          axios.put("/player/" + player._id["$oid"], {"answer": answer}).then((res) => {
             setIsCorrect(res.data["is_correct"])
+            setDisplayChoices(false);
           }).catch((e)=>{
             console.log("wat")
           })
         }
+
+        setDisplayChoices(false);
+        
+        setTimeout(function() {
+          cycle();
+        }, 10 * 1000)
         // milliseconds, 10 seconds for displaying correct/incorrect
-      }, submitAnswerDeadline/1000 - 10);
+      }, submitAnswerDeadline);
     })
-  })
+  }
 
   async function submitAnswer(answer){
-    let player = localStorage.getItem("player");
-    axios.put("/player", {"_id": player._id, "answer": answer}).then((res) => {
+    let player = JSON.parse(localStorage.getItem("player"));
+    console.log(player)
+    axios.put("/player/" + player._id["$oid"], {"answer": answer}).then((res) => {
       setAnswer(answer)
       setIsCorrect(res.data["is_correct"])
     }).catch((err)=>{
@@ -99,9 +121,11 @@ function Gameplay(props) {
         :
         <div>
           {
-            //show green or red screen for right or wrong like the traffic lights 
+            isCorrect ? 
+            <div>right</div>
+            :
+            <div>wrong</div>
           }
-          qpwoeiryqpwoeiryqwpoy
         </div>
       }
       </div>

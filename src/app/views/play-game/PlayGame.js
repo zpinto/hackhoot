@@ -25,7 +25,7 @@ function PlayGame(props) {
   function renderQuestion () {
     setInitialGet(true);
     axios.get('/game/' + gameId).then(res => {
-      setTimeLimit(res.data["time_limit"] - 10);
+      setTimeLimit(res.data["time_limit"]);
       setCurQuestion(res.data["questions"][res.data["cur_question"]]);
     }).catch(err => {
       
@@ -95,8 +95,8 @@ function PlayGame(props) {
             <p className="question">Scores</p>
             <div>
               {playersArr.map((p, i) => (
-                <div index={i.name} key={i.score}>
-                  <p>{p}</p>
+                <div index={i} key={i}>
+                  <p>{p.name}: {p.points}</p>
                 </div>
               ))}
             </div>

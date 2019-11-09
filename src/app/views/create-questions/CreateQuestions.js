@@ -41,7 +41,7 @@ function CreateQuestions(props) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    axios.post('/creategame', {'time_limit': 60}).then(res => {
+    axios.post('/creategame', {'time_limit': 30}).then(res => {
       return props.history.push('/admin/start-game/' + res.data._id["$oid"]);
     }).catch(err => {
       console.log("could not create game");

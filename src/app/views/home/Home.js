@@ -13,32 +13,45 @@ function Home(props) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setGameKey(e.target.elements.gameKey.value);
+    let tempGameKey = e.target.elements.gameKey.value 
+    let name = e.target.elements.name.value 
+
+    setGameKey(tempGameKey);
+    
     //
     let nextQuestionStartTime = 0;
     let currentTime = 0
     
     // handle logic for checking if the game id is valid here
-    const getGame = axios.get("/game/" + gameKey).then((res) => {
+    console.log(tempGameKey);
+    const getGame = axios.get("/game/" + tempGameKey).then((res) => {
       return res.data
-    }).then((res)=>{
-      nextQuestionStartTime = res.data["next_question_start_time"]
-      currentTime = res.data["cur_time"]
+    }).then((data)=>{
+      nextQuestionStartTime = data["next_question_start_time"]["$date"]
+      // fcurrentTime = data["cur_time"]["$date"]
+      // currentTime = new Date().getTime();
+      const now = new Date();
+      currentTime = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() , 
+      now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+      console.log("cur time:", currentTime)
+      // console.log(fcurrentTime);
+      console.log("next q:", nextQuestionStartTime);
     })
     const createPlayer = axios.post("/createplayer", {
-      "game_id": gameKey, 
+      "game_id": tempGameKey, 
       "name": name
     }).then((res)=>{
-      localStorage.setItem("player", res.data);
-      changePage((nextQuestionStartTime -  currentTime)/1000);
+      localStorage.setItem("player", JSON.stringify(res.data));
+      setShowForm(false);
+      changePage((nextQuestionStartTime -  currentTime), tempGameKey);
     }).catch((e) =>{
       setErrorMessage("game doesn't exist")
     })
-
     getGame.then(createPlayer);
   }
 
-  function changePage(timeInMS) {
+  function changePage(timeInMS, gameKey) {
+    console.log(timeInMS / 1000);
     setTimeout(function() {
       props.history.push('/gameplay/' + gameKey);
     }, timeInMS);

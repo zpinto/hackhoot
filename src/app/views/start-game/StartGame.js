@@ -13,7 +13,7 @@ function StartGame(props) {
     setInitialGet(true);
     axios.get('/game/' + gameId).then(res => {
       console.log(res.data["cur_time"],res.data["next_question_start_time"])
-      setTimeLimit(res.data["next_question_start_time"]-res.data["cur_time"]);
+      setTimeLimit(60);
     }).catch(err => {
       console.log("Failed to GET /game");
     });
