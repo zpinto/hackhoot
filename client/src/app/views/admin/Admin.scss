@@ -1,0 +1,45 @@
+
+
+.Admin {
+  min-height: 100vh;
+  min-width: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2e2e2e;
+
+  .admin-card {
+    background-color: white;
+    box-shadow: 0px 8px 15px rgba(0,0,0,0.1);
+    width: 50vw;
+    border-radius: 10px;
+    flex-flow: column;
+
+    & > div {
+      margin: 5em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .game-title {
+      text-align: center;
+    }
+
+    .game-form {
+      width: 100%;
+      margin-top: 3em;
+      position: relative;
+
+      button {
+        position: absolute;
+        right: 0;
+      }
+    }
+
+    h1 {
+      margin-bottom: .2em;
+    }
+  }
+}

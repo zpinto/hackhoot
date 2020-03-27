@@ -1,0 +1,69 @@
+
+
+.Gameplay {
+  background-color: #2e2e2e;
+  min-width: 100vw;
+  min-height: 100vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+
+  .right {
+    height: 100vh;
+    width: 100%;
+    background-color: #42d458;
+    font-size: 2em;
+    color: #FFFFFF;
+    position: relative;
+
+    p {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .wrong {
+    height: 100vh;
+    width: 100%;
+    background-color: #fc3835;
+    font-size: 2em;
+    color: #FFFFFF;
+    position: relative;
+
+    p {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .gameplay-content {
+    height: calc(100vh - 48px);
+    width: calc(100vw - 24px);
+    margin: 24px;
+    
+    & > div {
+      height: calc(100%);
+      width: calc(100% - 48px);
+      display: grid;
+      grid-gap: 24px;
+      grid-template-columns: 50% 50%;
+      flex-wrap: wrap;
+
+      & > div {
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        i {
+          font-size: 48px;
+          color: white;
+        }
+      }
+    }
+  }
+}

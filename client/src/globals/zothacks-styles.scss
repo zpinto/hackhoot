@@ -1,0 +1,42 @@
+/**
+
+HackUCI environment styles.
+
+When graphics gives us their style guidelines we can look here.
+
+**/
+
+
+// Temporary Appwide Style Variables
+$fontColor: #2e2e2e;
+$errorColor: #a31e1e;
+$hackUCIFont: Rubik;
+
+// Backgrounds
+$darkBackground: #2e2e2e;
+$lightBackground: #fcfcfc;
+$coloredLightBackground: #99d9ff;
+$tealBackground: #92dee2;
+$purpleBackground: #cba3fe;
+
+
+// Helper flex classes
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.flex-split {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-start-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+}

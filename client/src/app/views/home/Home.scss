@@ -1,0 +1,31 @@
+@import "globals/zothacks-styles.scss";
+
+.Home {
+  text-align: center;
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: #2e2e2e;
+  color: white;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    margin-top: 0;
+  }
+
+  & > div {
+    margin: 2em;
+    text-align: center;
+
+    .join-game-form { 
+      text-align: left;
+      margin-top: 2em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  }
+}
