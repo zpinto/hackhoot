@@ -91,21 +91,16 @@ class Player(Resource):
             return {'message': 'An error occured trying to look up this Game'}, 500
 
         # check the answers to see if they are correct
-        data['points'] = 0
+        data['points'] = player['points']
         data['is_correct'] = False
 
         if game['game_state'] == 'done':
             return {'message': 'The game ended'}, 423
 
-        # print(game['questions'][game['cur_question']]['answer'])
-        # print(data['answer'])
-        # print(data['answer_time'])
-        # print(game['cur_question_end_time'])
         if game['questions'][game['cur_question']]['answer'].lower() == data['answer'].lower() and data['answer_time'] < game['cur_question_end_time']:
             points = int(
                 1000 - 33.3 * (data['answer_time'] - game['cur_time']).total_seconds())
-            print(points)
-            data['points'] = player['points'] + points
+            data['points'] += points
             data['is_correct'] = True
 
         try:
