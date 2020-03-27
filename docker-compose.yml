@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  client:
+    build:
+      context: ./hackhoot-frontend-finished
+      dockerfile: Dockerfile
+    image: zpinto/hackhoot-frontend:latest
+    ports:
+      - 80:80
+
+  api:
+    build:
+      context: ./hackhoot-backend-finished
+      dockerfile: Dockerfile
+    image: zpinto/hackhoot-api:latest
+    ports:
+      - 5000:5000
+
+  db:
+    image: mongo
+    volumes:
+      - kahoot-data:/data/db
+
+volumes:
+  kahoot-data:
