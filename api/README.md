@@ -1,4 +1,4 @@
-# hackhoot-backend
+# HackHoot Backend
 
 ## Basic overview
 

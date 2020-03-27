@@ -1,9 +1,9 @@
-<<<<<<< HEAD
 env
 .vscode
 __pycache__
 .pyc
-=======
+
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -27,4 +27,3 @@ __pycache__
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
->>>>>>> master-holder
